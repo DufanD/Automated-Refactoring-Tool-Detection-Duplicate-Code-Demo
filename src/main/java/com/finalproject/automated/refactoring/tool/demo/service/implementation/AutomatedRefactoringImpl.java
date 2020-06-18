@@ -113,7 +113,7 @@ public class AutomatedRefactoringImpl implements AutomatedRefactoring {
                                 System.out.println("File: " + clonePairFile.getKey());
                                 System.out.println("Sum Clone Pair File: " + clonePairFile.getValue().size());
                                 System.out.println("List Clone Pair");
-                                printListClone(clonePairFile.getValue());
+                                printListClone(clonePairFile.getValue(), clonePairFile.getKey());
                                 System.out.println();
                                 sumPair.addAndGet(clonePairFile.getValue().size());
                             });
@@ -124,19 +124,22 @@ public class AutomatedRefactoringImpl implements AutomatedRefactoring {
         System.out.println("Sum of Clone Pairs: " + sumPair);
     }
 
-    private void printListClone(List<ClonePair> clonePairList) {
+    private void printListClone(List<ClonePair> clonePairList, String path) {
         int index = 1;
         for (ClonePair clone : clonePairList) {
             System.out.println("\nClone Pair " + index + " :");
-            printListCandidate(clone.getCloneCandidates());
+            printListCandidate(clone.getCloneCandidates(), path);
             index++;
         }
     }
 
-    private void printListCandidate(List<CloneCandidate> cloneCandidateList) {
+    private void printListCandidate(List<CloneCandidate> cloneCandidateList, String path) {
         int index = 1;
         for (CloneCandidate candidate : cloneCandidateList) {
-            System.out.println("Clone Candidate " + index + " :");
+            if (path.equals(candidate.getPath()))
+                System.out.println("Clone Candidate " + index + " :");
+            else
+                System.out.println("Clone Candidate " + index + " : (" + candidate.getPath() + ")");
             printStatements(candidate.getStatements());
             System.out.println();
             index++;
